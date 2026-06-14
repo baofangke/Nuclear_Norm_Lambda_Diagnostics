@@ -1,0 +1,16 @@
+seed = 20260527
+p = 30
+q = 25
+rank = 2
+sigma = 0.5
+signal = 6,4.4
+design = kronecker
+rho_p = 0.8
+rho_q = 0.7
+cov_scale = 0.2
+sample_size = 500
+full_lambda_factor = 0.04
+rank_lambda_factor = 0.03
+nuclear_maxit = 2000
+nuclear_tol = 1e-08
+out_root = C:/Users/Ke Baofang/Desktop/matrix-subsampling-simulations/0608result/p30_q25_covscale02_m500_nuclear_recommended_lambda_paths

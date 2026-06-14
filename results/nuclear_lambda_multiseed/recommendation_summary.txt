@@ -1,0 +1,9 @@
+Recommended lambda factors under the fixed p=30,q=25,n=500,cov-scale=0.2 setting
+n_seeds = 30
+base_lambda = sigma * sqrt((p+q)/n) = 0.16583124
+
+Full nuclear robust recommendation: lambda_factor = 0.04 , lambda = 0.0066332496 , median F-error = 4.45629 , q75 F-error = 4.72281 , near-best-within-10pct = 1
+Rank-2 truncation robust recommendation: lambda_factor = 0.03 , lambda = 0.0049749372 , median F-error = 4.0245 , q75 F-error = 4.33373 , near-best-within-10pct = 1
+
+Best mean full nuclear: lambda_factor = 0.04 , mean F-error = 4.45492
+Best mean rank-2 truncation: lambda_factor = 0.03 , mean F-error = 4.07712

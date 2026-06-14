@@ -1,0 +1,3 @@
+"seed","sample_size","p","q","rank","sigma","cov_scale","lambda_factor","lambda","iter","converged","final_full_truth_frob","final_rank_truncated_truth_frob","final_rank_1e4","final_rel_objective_change"
+20260527,500,30,25,2,0.5,0.2,0.04,0.0066332495807108,427,TRUE,4.49393223304898,4.05389950969159,11,8.09426376261392e-09
+20260527,500,30,25,2,0.5,0.2,0.03,0.0049749371855331,737,TRUE,4.68773123499193,3.89209845805964,12,9.70045605534918e-09
