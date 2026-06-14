@@ -1,0 +1,9 @@
+Nuclear-norm sample-size rate diagnostic
+sample_sizes = 300,400,500,700,1000,1500,2000
+full_lambda_factor = 0.04
+rank_lambda_factor = 0.03
+full_loglog_slope = -0.39593686
+rank_truncated_loglog_slope = -0.46373018
+reference_slope = -0.5
+
+Interpretation: factors are fixed from the n=500 lambda diagnostic and are not retuned for each sample size.

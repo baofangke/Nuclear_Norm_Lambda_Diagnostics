@@ -1,0 +1,17 @@
+seed = 20260527
+p = 30
+q = 25
+rank = 2
+sigma = 0.5
+signal = 6,4.4
+design = kronecker
+rho_p = 0.8
+rho_q = 0.7
+cov_scale = 0.2
+sample_sizes = 300,400,500,700,1000,1500,2000
+full_lambda_factor = 0.04
+rank_lambda_factor = 0.03
+nuclear_maxit = 2000
+nuclear_tol = 1e-08
+anchor_n = 500
+out_root = C:/Users/Ke Baofang/Desktop/matrix-subsampling-simulations/github_upload/Nuclear_Norm_Lambda_Diagnostics_repo/results/nuclear_sample_size_rate

@@ -12,6 +12,7 @@ scripts/
   test_nuclear_lambda_sweep_p30q25_covscale02.R
   test_nuclear_lambda_multiseed_p30q25_covscale02.R
   test_nuclear_recommended_lambda_iteration_paths.R
+  test_nuclear_sample_size_rate_p30q25_covscale02.R
 
 tables/
   nuclear_default_summary.csv
@@ -19,22 +20,27 @@ tables/
   nuclear_lambda_multiseed_aggregate.csv
   nuclear_lambda_recommendation_summary.txt
   nuclear_recommended_lambda_iteration_summary.csv
+  nuclear_sample_size_rate_p30q25_covscale02.csv
+  nuclear_sample_size_rate_summary.txt
 
 figures/
   fig_nuclear_lambda_sweep_error.png
   fig_nuclear_lambda_multiseed_error_bands.png
   fig_nuclear_lambda_multiseed_near_best.png
   fig_nuclear_recommended_lambda_iteration_paths.png
+  fig_nuclear_sample_size_rate.png
 
 docs/
   lambda_selection_notes.md
   objective_vs_truth_frobenius.md
+  sample_size_rate_notes.md
 
 results/
   nuclear_norm_default/
   nuclear_lambda_sweep_refined/
   nuclear_lambda_multiseed/
   nuclear_recommended_lambda_iteration_paths/
+  nuclear_sample_size_rate/
 ```
 
 `results/` 保存原始输出，包括配置、CSV、PDF 和 PNG。`tables/` 是便于快速查看的核心汇总。
@@ -78,6 +84,7 @@ sigma * sqrt((p + q) / n) = 0.16583124
 4. 如果在 nuclear 解后做 rank-2 truncation，推荐 `lambda_factor=0.03`，多 seed median Frobenius error 约为 `4.02`。
 5. 单个 seed 下，rank-2 truncation 的误差可以到 `3.89` 左右，已经接近同设置下 ScaledGD eta=1 的 `3.91`。
 6. penalized objective 收敛不等价于真实 Frobenius error 最小；真实 error 的最小点可能早于 objective-change 停止点。
+7. 固定推荐 lambda 因子并改变样本量时，rank-2 truncation 的 log-log 斜率约为 `-0.464`，比 full nuclear 的 `-0.396` 更接近 `1/sqrt(n)` 的 `-0.5` 参考斜率。
 
 ## 默认 lambda 的表现
 
@@ -147,6 +154,45 @@ near-best 频率图显示：`lambda_factor` 在 `0.035` 到 `0.05` 对 full nucl
 
 这个图说明：算法按 penalized objective 停止时，真实 Frobenius error 不一定处在最低点。实际应用中无法使用真实 `M0` 来停止，但在 simulation 诊断中这个现象很重要。
 
+## 样本量 rate 诊断
+
+固定 `p=30, q=25, cov-scale=0.2`，沿用多 seed lambda sweep 给出的经验因子：
+
+```text
+full nuclear:       lambda_factor = 0.04
+rank-2 truncation:  lambda_factor = 0.03
+```
+
+只改变样本量：
+
+```text
+n = 300, 400, 500, 700, 1000, 1500, 2000
+```
+
+结果如下：
+
+| n | full iter | full F-error | full adjusted ratio | rank iter | rank-2 F-error | rank adjusted ratio |
+|---:|---:|---:|---:|---:|---:|---:|
+| 300 | 222 | 4.959 | 3.28 | 261 | 4.654 | 3.07 |
+| 400 | 386 | 4.844 | 3.70 | 613 | 4.528 | 3.45 |
+| 500 | 206 | 4.403 | 3.75 | 620 | 4.178 | 3.56 |
+| 700 | 360 | 4.079 | 4.12 | 709 | 3.629 | 3.66 |
+| 1000 | 362 | 3.476 | 4.19 | 816 | 3.056 | 3.69 |
+| 1500 | 221 | 2.747 | 4.06 | 434 | 2.483 | 3.67 |
+| 2000 | 652 | 2.410 | 4.11 | 887 | 1.935 | 3.30 |
+
+对 `log(||Mhat-M0||_F)` 关于 `log(n)` 做线性拟合：
+
+```text
+full nuclear slope       = -0.396
+rank-2 truncation slope  = -0.464
+1/sqrt(n) reference      = -0.5
+```
+
+![nuclear sample-size rate](figures/fig_nuclear_sample_size_rate.png)
+
+详细说明见 [`docs/sample_size_rate_notes.md`](docs/sample_size_rate_notes.md)。
+
 ## 复现命令
 
 默认 nuclear 迭代诊断：
@@ -182,6 +228,13 @@ Rscript scripts/test_nuclear_lambda_multiseed_p30q25_covscale02.R `
 ```powershell
 Rscript scripts/test_nuclear_recommended_lambda_iteration_paths.R `
   --out-root=results_reproduced/nuclear_recommended_lambda_iteration_paths
+```
+
+样本量 rate 诊断：
+
+```powershell
+Rscript scripts/test_nuclear_sample_size_rate_p30q25_covscale02.R `
+  --out-root=results_reproduced/nuclear_sample_size_rate
 ```
 
 ## 解释边界
